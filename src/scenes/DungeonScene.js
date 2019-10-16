@@ -45,6 +45,14 @@ export default class DungeonScene extends EntityScene {
     }
   }
 
+  removeEntity(entity) {
+    super.removeEntity(entity);
+
+    if (this.monsters.includes(entity)) {
+      this.monsters.splice(this.monsters.findIndex(e => e === entity), 1);
+    }
+  }
+
   _createMap() {
     this._map = DungeonLevel.randomLevel(51, 51, this.dungeonLevel);
 

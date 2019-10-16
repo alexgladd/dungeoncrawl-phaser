@@ -1,9 +1,9 @@
-import SpriteEntity from './SpriteEntity';
+import Creature from './Creature';
 import MovementController from '../game/MovementController';
 
-export default class Monster extends SpriteEntity {
+export default class Monster extends Creature {
   constructor(scene, x=0, y=0, frame=282) {
-    super(scene, x, y, frame);
+    super(scene, { maxHp: 2, hp: 2 }, x, y, frame);
   }
 
   start() {

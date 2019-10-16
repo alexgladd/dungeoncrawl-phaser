@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
-import SpriteEntity from './SpriteEntity';
+import Creature from './Creature';
 import MovementController from '../game/MovementController';
 
-export default class Player extends SpriteEntity {
+export default class Player extends Creature {
   constructor(scene, x=0, y=0, frame=25) {
-    super(scene, x, y, frame);
+    super(scene, { maxHp: 10, hp: 10, attack: 2 }, x, y, frame);
 
     this.handleInput = this.handleInput.bind(this);
   }
@@ -53,8 +53,11 @@ export default class Player extends SpriteEntity {
     const adjEntity = this.scene.getAdjacentEntity(this, direction);
 
     if (adjEntity) {
-      // attack the adjacent entity
-      console.log('Player has adjacent entity', direction);
+      // attack the adjacent entity if it's a creature
+      if (adjEntity instanceof Creature) {
+        this.attack(adjEntity);
+        this.scene.startAiTurn();
+      }
     } else if (MovementController.canMove(this, direction, this.scene.map)) {
       this.translate(direction);
       this.scene.startAiTurn();

@@ -38,6 +38,18 @@ export default class EntityScene extends Phaser.Scene {
     entity.start();
   }
 
+  removeEntity(entity) {
+    if (!entity || !(entity instanceof Entity)) return;
+
+    const idx = this._entities.findIndex(e => e === entity);
+
+    if (idx >= 0) {
+      this._entities.splice(idx, 1);
+    }
+
+    entity.destroy();
+  }
+
   getAdjacentEntity(entity, direction) {
     switch (direction) {
       case MovementController.directions.up:
