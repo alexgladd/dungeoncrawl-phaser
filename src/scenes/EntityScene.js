@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import Entity from '../entities/Entity';
 import Position from '../game/Position';
 import MovementController from '../game/MovementController';
+import DungeonLevel from '../game/DungeonLevel';
 
 export default class EntityScene extends Phaser.Scene {
   constructor(key, config={}) {
@@ -14,22 +15,39 @@ export default class EntityScene extends Phaser.Scene {
     this._map = null;
   }
 
+  /**
+   * @returns {Array<Entity>} the list of entities currently in the scene
+   */
   get entities() {
     return this._entities;
   }
 
+  /**
+   * @returns {DungeonLevel} the dugneon level map being used in the scene
+   */
   get map() {
     return this._map;
   }
 
+  /**
+   * Signal to the scene that the player is starting their turn. Should be overridden by subclasses.
+   */
   startPlayerTurn() {
     // to be overridden
   }
 
+  /**
+   * Signal to the scene that the player's turn is over so that the AI can take its turn(s). Should
+   * be overridded by subclasses.
+   */
   startAiTurn() {
     // to be overridden
   }
 
+  /**
+   * Add an Entity to the scene
+   * @param {Entity} entity the entity to add to the scene
+   */
   addEntity(entity) {
     if (!entity || !(entity instanceof Entity)) return;
 
@@ -38,6 +56,10 @@ export default class EntityScene extends Phaser.Scene {
     entity.start();
   }
 
+  /**
+   * Remove an Entity from the scene; automatically calls 'destroy' on the Entity
+   * @param {Entity} entity the entity to remove from the scene
+   */
   removeEntity(entity) {
     if (!entity || !(entity instanceof Entity)) return;
 
@@ -50,6 +72,13 @@ export default class EntityScene extends Phaser.Scene {
     entity.destroy();
   }
 
+  /**
+   * Check if there is any entity adjacent to the given Entity in the given direction
+   * @param {Entity} entity the entity to check adjacency for
+   * @param {import('../game/MovementController').Direction} direction the direction in which to
+   * check adjacency
+   * @returns {(Entity|null)} the adjacent Entity if one is found, or null
+   */
   getAdjacentEntity(entity, direction) {
     switch (direction) {
       case MovementController.directions.up:
@@ -69,6 +98,11 @@ export default class EntityScene extends Phaser.Scene {
     }
   }
 
+  /**
+   * Get the Entity at the given position, if one exists
+   * @param {import('../game/Position').Position} pos the Position to check
+   * @returns {(Entity|null)} the Entity at the given position if found, or null
+   */
   getEntityAt(pos={ x: 0, y: 0 }) {
     let entity = null;
 

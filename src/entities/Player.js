@@ -63,48 +63,4 @@ export default class Player extends Creature {
       this.scene.startAiTurn();
     }
   }
-
-  // handleInputUp() {
-  //   const adjEntity = this.scene.getAdjacentEntity(this, MovementController.directions.up);
-
-  //   if (adjEntity) {
-  //     console.log('Adjacent entity up');
-  //   } else if (MovementController.canMoveUp(this, this.scene.map)) {
-  //     this.translateUp();
-  //     this.scene.startAiTurn();
-  //   }
-  // }
-
-  // handleInputDown() {
-  //   const adjEntity = this.scene.getAdjacentEntity(this, MovementController.directions.down);
-
-  //   if (adjEntity) {
-  //     console.log('Adjacent entity down');
-  //   } else if (MovementController.canMoveDown(this, this.scene.map)) {
-  //     this.translateDown();
-  //     this.scene.startAiTurn();
-  //   }
-  // }
-
-  // handleInputLeft() {
-  //   const adjEntity = this.scene.getAdjacentEntity(this, MovementController.directions.left);
-
-  //   if (adjEntity) {
-  //     console.log('Adjacent entity left');
-  //   } else if (MovementController.canMoveLeft(this, this.scene.map)) {
-  //     this.translateLeft();
-  //     this.scene.startAiTurn();
-  //   }
-  // }
-
-  // handleInputRight() {
-  //   const adjEntity = this.scene.getAdjacentEntity(this, MovementController.directions.right);
-
-  //   if (adjEntity) {
-  //     console.log('Adjacent entity right');
-  //   } else if (MovementController.canMoveRight(this, this.scene.map)) {
-  //     this.translateRight();
-  //     this.scene.startAiTurn();
-  //   }
-  // }
 }

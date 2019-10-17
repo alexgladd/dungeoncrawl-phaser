@@ -1,7 +1,6 @@
 // generate a dungeon level
 
 import Dungeoneer from 'dungeoneer';
-import { posix } from 'path';
 
 export default class DungeonLevel {
   constructor(rooms, tiles, level=0) {
@@ -10,28 +9,47 @@ export default class DungeonLevel {
     this._level = level;
   }
 
+  /**
+   * @returns {number} the width of the level in tiles
+   */
   get tileWidth() {
     return this._tiles.length;
   }
 
+  /**
+   * @returns {number} the height of the level in tiles
+   */
   get tileHeight() {
     return this._tiles[0].length;
   }
 
+  /**
+   * @returns {Array<object>} the list of rooms in the level
+   */
   get rooms() {
     return this._rooms;
   }
 
+  /**
+   * @returns {Array<Array<object>>} the 2D array of tiles in the level ([x[y]]
+   */
   get tiles() {
     return this._tiles;
   }
 
+  /**
+   * @returns {object} the player spawn room for the level
+   */
   get spawnRoom() {
     if (!this._spawnRoom) this._createLocations();
 
     return this._spawnRoom;
   }
 
+  /**
+   * @returns {import('./Position').Position} the spawn location (game position) for the player in
+   * the level
+   */
   get spawnLocation() {
     if (!this._spawnLocation) {
       this._createLocations();
@@ -40,12 +58,18 @@ export default class DungeonLevel {
     return this._spawnLocation;
   }
 
+  /**
+   * @returns {object} the level exit room for the level
+   */
   get exitRoom() {
     if (!this._exitRoom) this._createLocations();
     
     return this._exitRoom;
   }
 
+  /**
+   * @returns {import('./Position').Position} the exit location (game position) for the level
+   */
   get exitLocation() {
     if (!this._exitLocation) {
       this._createLocations();
@@ -54,6 +78,9 @@ export default class DungeonLevel {
     return this._exitLocation;
   }
 
+  /**
+   * @returns {Array<Array<number>>} the 2D level data to use for a scene TileMap ([y[x]])
+   */
   get levelData() {
     if (!this._levelData) {
       this._buildLevelData();
@@ -62,6 +89,11 @@ export default class DungeonLevel {
     return this._levelData;
   }
 
+  /**
+   * Checks if the given game position is passable in the level
+   * @param {import('./Position').Position} pos the game position to check
+   * @returns {boolean} true if the position is passable, false otherwise
+   */
   isPassable(pos={ x: 0, y: 0 }) {
     if (!pos) {
       return false;
@@ -74,6 +106,9 @@ export default class DungeonLevel {
     }
   }
 
+  /**
+   * Determine the spawn and exit rooms and locations for the level
+   */
   _createLocations() {
     this._spawnRoomIdx = Math.floor(Math.random() * this._rooms.length);
     const spawnRoom = this._rooms[this._spawnRoomIdx];
@@ -104,6 +139,9 @@ export default class DungeonLevel {
     this._exitLocation = DungeonLevel.getRoomMiddle(exitRoom, true);
   }
 
+  /**
+   * Build the level data to use for a scene's tilemap
+   */
   _buildLevelData() {
     this._levelData = [];
 
@@ -126,6 +164,12 @@ export default class DungeonLevel {
     }
   }
 
+  /**
+   * Get the middle location (game position) for the given room
+   * @param {object} room the room to get the middle for
+   * @param {boolean} toInt should the computed location be floored to an integer
+   * @returns {import('./Position').Position} the middle of the room
+   */
   static getRoomMiddle(room, toInt=false) {
     if (toInt) {
       return {
@@ -140,6 +184,11 @@ export default class DungeonLevel {
     }
   }
 
+  /**
+   * Get a random location (game position) within the given room
+   * @param {object} room the room to get a random location for
+   * @returns {import('./Position').Position} the location within the room
+   */
   static randomRoomLocation(room) {
     return {
       x: room.x + Math.floor(Math.random() * room.width),
@@ -147,6 +196,12 @@ export default class DungeonLevel {
     };
   }
 
+  /**
+   * Build a new randomized level
+   * @param {number} width the width of the level in tiles
+   * @param {number} height the height of the level in tiles
+   * @param {number} dungeonLevel the vertical level or floor of the level
+   */
   static randomLevel(width, height, dungeonLevel=0) {
     const level = Dungeoneer.build({ width, height });
     return new DungeonLevel(level.rooms, level.tiles, dungeonLevel);
