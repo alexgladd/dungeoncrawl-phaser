@@ -1,15 +1,37 @@
 import Creature from './Creature';
 import MovementController from '../game/MovementController';
 
+/**
+ * @typedef MonsterType
+ * @type {('crab'|'spider')}
+ */
+
+const MonsterTypes = {
+  crab: 'crab',
+  spider: 'spider'
+};
+
 export default class Monster extends Creature {
-  constructor(scene, x=0, y=0, frame=282) {
-    super(scene, { maxHp: 2, hp: 2 }, x, y, frame);
+  /**
+   * @returns {Object<symbol, MonsterType>} the available monster types
+   */
+  static get types() {
+    return MonsterTypes;
+  }
+
+  constructor(scene, stats={}, tint=null, x=0, y=0, frame=282) {
+    super(scene, stats, x, y, frame);
+
+    this._tint = tint;
   }
 
   start() {
     super.start();
 
-    this.sprite.setTint(0xb5651d);
+    if (this._tint) {
+      // 0xb5651d
+      this.sprite.setTint(this._tint);
+    }
   }
 
   aiTurn() {

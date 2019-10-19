@@ -1,6 +1,7 @@
 import EntityScene from './EntityScene';
 import Player from '../entities/Player';
 import Monster from '../entities/Monster';
+import MonsterFactory from '../entities/MonsterFactory';
 import DungeonLevel from '../game/DungeonLevel';
 import TurnController from '../game/TurnController';
 import InputController from '../game/InputController';
@@ -82,7 +83,7 @@ export default class DungeonScene extends EntityScene {
       if (room === this.map.spawnRoom) continue;
 
       const rPos = DungeonLevel.randomRoomLocation(room);
-      const monster = new Monster(this, rPos.x, rPos.y);
+      const monster = MonsterFactory.createRandomMonster(this, this.dungeonLevel, rPos.x, rPos.y);
 
       this.addEntity(monster);
       this.monsters.push(monster);
