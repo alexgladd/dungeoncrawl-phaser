@@ -62,6 +62,7 @@ export default class Player extends Creature {
       }
     } else if (MovementController.canMove(this, direction, this.scene.map)) {
       this.translate(direction);
+      UiController.clearEnemy();
       this.scene.startAiTurn();
     }
   }

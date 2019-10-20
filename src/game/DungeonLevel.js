@@ -154,9 +154,9 @@ export default class DungeonLevel {
         if (tile.type === 'wall') {
           this._levelData[y].push(2);
         } else if (this._level !== 0 && this.spawnLocation.x === x && this.spawnLocation.y === y) {
-          this._levelData[y].push(195);
-        } else if (this.exitLocation.x === x && this.exitLocation.y === y) {
           this._levelData[y].push(194);
+        } else if (this.exitLocation.x === x && this.exitLocation.y === y) {
+          this._levelData[y].push(195);
         } else {
           this._levelData[y].push(0);
         }
