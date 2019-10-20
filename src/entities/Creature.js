@@ -35,6 +35,11 @@ export default class Creature extends SpriteEntity {
     super(scene, x, y, frame);
 
     this.stats = { ...DefaultStats, ...stats };
+
+    /**
+     * @type {?Creature}
+     */
+    this.lastAttacker = null;
   }
 
   /**
@@ -88,9 +93,11 @@ export default class Creature extends SpriteEntity {
 
   /**
    * Attack another creature
-   * @param {Creature} creature 
+   * @param {Creature} creature the creature to attack
    */
   attack(creature) {
+    creature.lastAttacker = this;
+    
     const hit = this.hitChance;
 
     if (hit === Roll.criticalSuccess) {

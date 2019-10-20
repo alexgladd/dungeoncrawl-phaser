@@ -1,6 +1,7 @@
 import Creature from './Creature';
 import MovementController from '../game/MovementController';
 import UiController from '../ui/UiController';
+import Player from './Player';
 
 /**
  * @typedef MonsterType
@@ -68,6 +69,11 @@ export default class Monster extends Creature {
   }
 
   _preDeath() {
+    if (this.lastAttacker && this.lastAttacker instanceof Player) {
+      // reward xp
+      this.lastAttacker.addExperience(this.stats.rewardXp);
+    }
+
     UiController.addLogMessage(`The ${this.type} dies`);
   }
 }

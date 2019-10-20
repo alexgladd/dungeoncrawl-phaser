@@ -23,10 +23,12 @@ const LevelMonsters = [
 const createMonster = (type, scene, x=0, y=0) => {
   switch (type) {
     case Monster.types.crab:
-      return new Monster(scene, type, { level: 0, maxHp: 1, hp: 1, defense: 0 }, 0x189BD5, x, y, 185);
+      const crabStats = { level: 0, maxHp: 1, hp: 1, defense: 0, rewardXp: 10 };
+      return new Monster(scene, type, crabStats, 0x189BD5, x, y, 185);
 
     case Monster.types.spider:
-      return new Monster(scene, type, { level: 1, maxHp: 2, hp: 2, defense: 0 }, 0x875303, x, y, 190);
+      const spiderStats = { level: 1, maxHp: 2, hp: 2, defense: 0, rewardXp: 15 };
+      return new Monster(scene, type, spiderStats, 0x875303, x, y, 190);
 
     default:
       console.error('Invalid monster type requested', type);

@@ -77,7 +77,7 @@ const clearPlayerStats = () => {
  */
 const updatePlayerStats = (player) => {
   playerLvl.innerText = player.stats.level;
-  // playerXp.innerText =
+  playerXp.innerText = `${player.stats.xp} / ${player.stats.xpToNextLevel}`;
   playerHp.innerText = `${player.stats.hp} / ${player.stats.maxHp}`;
   playerAtk.innerText = player.stats.attack;
   playerDef.innerText = player.stats.defense;
