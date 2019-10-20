@@ -7,7 +7,7 @@ const config = {
   render: {
     pixelArt: true
   },
-  scene: new DungeonScene(1),
+  scene: new DungeonScene(),
   scale: {
     width: 320,
     height: 240,

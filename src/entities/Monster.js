@@ -37,6 +37,11 @@ export default class Monster extends Creature {
     if (this._tint) {
       this.sprite.setTint(this._tint);
     }
+
+    this.sprite.setInteractive({ cursor: 'help' });
+    this.sprite.on('pointerdown', () => {
+      UiController.updateEnemy(this);
+    });
   }
 
   aiTurn() {
