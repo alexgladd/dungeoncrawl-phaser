@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import Creature from './Creature';
 import MovementController from '../game/MovementController';
+import UiController from '../ui/UiController';
 
 export default class Player extends Creature {
   constructor(scene, x=0, y=0, frame=25) {
@@ -56,11 +57,24 @@ export default class Player extends Creature {
       // attack the adjacent entity if it's a creature
       if (adjEntity instanceof Creature) {
         this.attack(adjEntity);
+        UiController.updateEnemy(adjEntity);
         this.scene.startAiTurn();
       }
     } else if (MovementController.canMove(this, direction, this.scene.map)) {
       this.translate(direction);
       this.scene.startAiTurn();
+    }
+  }
+
+  /**
+   * Handle the results of an attack
+   * @param {import('./Creature').CombatResult} result the combat results
+   */
+  _postAttack(result) {
+    if (result.didHit) {
+      UiController.addLogMessage(`You hit the ${result.defender.type} for ${result.damage} damage`);
+    } else {
+      UiController.addLogMessage(`You miss the ${result.defender.type}`);
     }
   }
 }

@@ -1,6 +1,16 @@
 // dice rolls
 
 /**
+ * Signifies a critical success roll
+ */
+const criticalSuccess = 999;
+
+/**
+ * Signifies a critical failure roll
+ */
+const criticalFailure = 0;
+
+/**
  * The most generic of rolls: roll a M-sided die N times and sum the results
  * @param {number} n the number of times to roll
  * @param {number} m the number of sides on the die
@@ -36,6 +46,8 @@ const d20 = () => {
 }
 
 export default {
+  criticalSuccess,
+  criticalFailure,
   NdM,
   dN,
   d20

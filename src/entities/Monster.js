@@ -1,5 +1,6 @@
 import Creature from './Creature';
 import MovementController from '../game/MovementController';
+import UiController from '../ui/UiController';
 
 /**
  * @typedef MonsterType
@@ -19,17 +20,21 @@ export default class Monster extends Creature {
     return MonsterTypes;
   }
 
-  constructor(scene, stats={}, tint=null, x=0, y=0, frame=282) {
+  constructor(scene, type, stats={}, tint=null, x=0, y=0, frame=282) {
     super(scene, stats, x, y, frame);
 
+    this._type = type;
     this._tint = tint;
+  }
+
+  get type() {
+    return this._type;
   }
 
   start() {
     super.start();
 
     if (this._tint) {
-      // 0xb5651d
       this.sprite.setTint(this._tint);
     }
   }
@@ -55,5 +60,9 @@ export default class Monster extends Creature {
     } else {
       return MovementController.canMove(this, direction, this.scene.map);
     }
+  }
+
+  _preDeath() {
+    UiController.addLogMessage(`The ${this.type} dies`);
   }
 }

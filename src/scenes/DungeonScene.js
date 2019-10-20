@@ -4,6 +4,7 @@ import Monster from '../entities/Monster';
 import MonsterFactory from '../entities/MonsterFactory';
 import DungeonLevel from '../game/DungeonLevel';
 import TurnController from '../game/TurnController';
+import UiController from '../ui/UiController';
 import InputController from '../game/InputController';
 import MovementController from '../game/MovementController';
 import spritesheet from '../assets/spritesheet.png';
@@ -28,6 +29,8 @@ export default class DungeonScene extends EntityScene {
     this._createMap();
     this._spawnPlayer();
     this._spawnMonsters();
+
+    UiController.addLogMessage(`You enter dungeon level ${this.dungeonLevel}`);
 
     this.input.keyboard.on('keydown', this.handleInput, this);
   }
@@ -72,6 +75,7 @@ export default class DungeonScene extends EntityScene {
   _spawnPlayer() {
     this.player = new Player(this, this.map.spawnLocation.x, this.map.spawnLocation.y);
     this.addEntity(this.player);
+    UiController.updatePlayerStats(this.player);
   }
 
   _spawnMonsters() {

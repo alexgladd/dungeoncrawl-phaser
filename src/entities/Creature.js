@@ -4,6 +4,22 @@ import SpriteEntity from './SpriteEntity';
 import Roll from '../game/Roll';
 import Util from '../game/Util';
 
+/**
+ * @typedef CombatResult
+ * @type {Object}
+ * @property {Creature} attacker the attacking creature
+ * @property {Creature} defender the defending creature
+ * @property {boolean} didHit whether the attack hit
+ * @property {number} hit the hit chance
+ * @property {?number} dodge the dodge chance
+ * @property {?number} attack the attack strength
+ * @property {?number} defense the defense strength
+ * @property {?number} damage the attack damage
+ */
+
+/**
+ * Default stats for a Creature
+ */
 const DefaultStats = {
   level: 1,
   maxHp: 1,
@@ -13,9 +29,6 @@ const DefaultStats = {
   accuracy: 0,
   dodge: 0
 };
-
-const CriticalSuccess = 999;
-const CriticalFailure = 0;
 
 export default class Creature extends SpriteEntity {
   constructor(scene, stats=DefaultStats, x=0, y=0, frame=0) {
@@ -31,9 +44,9 @@ export default class Creature extends SpriteEntity {
     const roll = Roll.d20();
 
     if (roll === 20) {
-      return CriticalSuccess;
+      return Roll.criticalSuccess;
     } else if (roll === 1) {
-      return CriticalFailure;
+      return Roll.criticalFailure;
     } else {
       return Util.clamp(roll + this.stats.accuracy, 0, 20);
     }
@@ -46,9 +59,9 @@ export default class Creature extends SpriteEntity {
     const roll = Roll.d20();
 
     if (roll === 20) {
-      return CriticalSuccess;
+      return Roll.criticalSuccess;
     } else if (roll === 1) {
-      return CriticalFailure;
+      return Roll.criticalFailure;
     } else {
       return Util.clamp(roll + this.stats.dodge, 0, 20);
     }
@@ -80,19 +93,19 @@ export default class Creature extends SpriteEntity {
   attack(creature) {
     const hit = this.hitChance;
 
-    if (hit === CriticalSuccess) {
+    if (hit === Roll.criticalSuccess) {
       // always hit
       this._attackHit(creature, hit);
-    } else if (hit === CriticalFailure) {
+    } else if (hit === Roll.criticalFailure) {
       // always miss
-      this._attackMiss(hit);
+      this._attackMiss(creature, hit);
     } else {
       const dodge = Util.clamp(creature.dodgeChance - hit, 0, 20);
 
-      if (dodge === CriticalSuccess) {
+      if (dodge === Roll.criticalSuccess) {
         // always dodge
-        this._attackMiss(hit, dodge);
-      } else if (dodge === CriticalFailure) {
+        this._attackMiss(creature, hit, dodge);
+      } else if (dodge === Roll.criticalFailure) {
         // always fail to dodge
         this._attackHit(creature, hit, dodge);
       } else if (hit > dodge) {
@@ -100,7 +113,7 @@ export default class Creature extends SpriteEntity {
         this._attackHit(creature, hit, dodge);
       } else {
         // miss
-        this._attackMiss(hit, dodge);
+        this._attackMiss(creature, hit, dodge);
       }
     }
   }
@@ -110,11 +123,12 @@ export default class Creature extends SpriteEntity {
    * @param {number} damage the amound of HP damage to take
    */
   takeDamage(damage) {
-    const newHp = this.stats.hp - damage;
+    const newHp = Math.max(0, this.stats.hp - damage);
     this.stats.hp = newHp;
 
     if (this.stats.hp <= 0) {
       // TODO this creature dies
+      this._preDeath();
       this.scene.removeEntity(this);
     }
   }
@@ -128,19 +142,62 @@ export default class Creature extends SpriteEntity {
   _attackHit(creature, hit, dodge=null) {
     const atkPower = this.attackPower;
     const defPower = creature.defensePower;
-    const damage = Math.max(atkPower - defPower, 0);
 
-    console.log(`${this.constructor.name}'s attack hits [ hit=${hit} dodge=${dodge} atk=${atkPower} def=${defPower} dmg=${damage} ]`)
+    /**
+     * @type {CombatResult}
+     */
+    const result = {
+      attacker: this,
+      defender: creature,
+      didHit: true,
+      hit,
+      dodge,
+      attack: atkPower,
+      defense: defPower,
+      damage: Math.max(atkPower - defPower, 0)
+    };
 
-    creature.takeDamage(damage);
+    console.log(`${this.constructor.name}'s attack hits [ hit=${hit} dodge=${dodge} atk=${result.attack} def=${result.defense} dmg=${result.damage} ]`)
+
+    this._postAttack(result);
+    creature.takeDamage(result.damage);
   }
 
   /**
    * Resolve an attack with a miss
+   * @param {Creature} creature the creature being attacked
    * @param {number} hit the hit chance for the failed attack
    * @param {number} dodge the dodge chance for the failed attack
    */
-  _attackMiss(hit, dodge=null) {
+  _attackMiss(creature, hit, dodge=null) {
+    /**
+     * @type {CombatResult}
+     */
+    const result = {
+      attacker: this,
+      defender: creature,
+      didHit: false,
+      hit,
+      dodge
+    };
+
     console.log(`${this.constructor.name}'s attack misses [ hit=${hit} dodge=${dodge} ]`);
+
+    this._postAttack(result);
+  }
+
+  /**
+   * Called when the creature is about to die; should be overridden by subclasses.
+   */
+  _preDeath() {
+
+  }
+
+  /**
+   * Called after this creature completes an attack; should be overridden by subclasses.
+   * @param {CombatResult} result the results of the combat
+   */
+  _postAttack(result) {
+
   }
 }
