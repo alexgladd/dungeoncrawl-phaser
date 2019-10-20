@@ -6,18 +6,166 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Dungeon Game</title>
 
+  <link href="https://fonts.googleapis.com/css?family=VT323&display=swap" rel="stylesheet">
   <style type="text/css">
     * {
       margin: 0;
       box-sizing: border-box;
+      font-family: 'VT323', monospace;
+    }
+
+    body {
+      color: whitesmoke;
+      background-color: black;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    canvas {
+      border: 2px brown solid;
+    }
+
+    #game {
+      display: grid;
+      grid-template-columns: 75vw 25vw;
+      grid-template-rows: 100vh;
+      grid-template-areas: "canvas ui";
     }
 
     #game-canvas {
-      width: 100vw;
+      grid-area: canvas;
+    }
+
+    #game-ui {
+      grid-area: ui;
+      display: flex;
+      flex-flow: column nowrap;
+      height: 100%;
+      padding: 8px;
+    }
+
+    #log-container {
+      flex: 1 1 auto;
+      display: flex;
+      flex-flow: column nowrap;
+      margin-bottom: 0;
+      overflow-y: hidden;
+    }
+
+    #log {
+      flex: 1 1 auto;
+      display: flex;
+      flex-flow: column nowrap;
+      overflow-y: auto;
+    }
+    #log div {
+      margin-bottom: 4px;
+    }
+
+    .ui-section {
+      margin-bottom: 16px;
+    }
+
+    .stat {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin: 4px 0 4px 0;
     }
   </style>
 </head>
 <body>
-  <div id="game-canvas"></div>
+  <div id="game">
+    <div id="game-canvas"></div>
+
+    <div id="game-ui">
+      <h1>Dungeon Crawl</h1>
+
+      <div class="ui-section">
+        <h2>Stats</h2>
+        <div class="stat">
+          <h3>LVL</h3>
+          <div id="level">-</div>
+        </div>
+        <div class="stat">
+          <h3>XP</h3>
+          <div id="experience">-</div>
+        </div>
+        <div class="stat">
+          <h3>HP</h3>
+          <div id="hp">-</div>
+        </div>
+        <div class="stat">
+          <h3>ATK</h3>
+          <div id="attack">-</div>
+        </div>
+        <div class="stat">
+          <h3>DEF</h3>
+          <div id="defense">-</div>
+        </div>
+        <div class="stat">
+          <h3>ACC</h3>
+          <div id="accuracy">-</div>
+        </div>
+        <div class="stat">
+          <h3>DGE</h3>
+          <div id="dodge">-</div>
+        </div>
+      </div>
+
+      <div class="ui-section">
+        <h2>Equipment</h2>
+        <div class="stat">
+          <h3>WEAPON</h3>
+          <div id="weapon">-</div>
+        </div>
+        <div class="stat">
+          <h3>ARMOR</h3>
+          <div id="armor">-</div>
+        </div>
+        <div class="stat">
+          <h3>JEWEL</h3>
+          <div id="trinket">-</div>
+        </div>
+      </div>
+
+      <div class="ui-section">
+        <h2>Inventory</h2>
+        <ol id="inventory">
+          <li>-</li>
+          <li>-</li>
+          <li>-</li>
+          <li>-</li>
+          <li>-</li>
+          <li>-</li>
+        </ol>
+      </div>
+
+      <div class="ui-section">
+        <h2>Enemy</h2>
+        <div class="stat">
+          <h3>TYPE</h3>
+          <div id="enemy-type">-</div>
+        </div>
+        <div class="stat">
+          <h3>LVL</h3>
+          <div id="enemy-level">-</div>
+        </div>
+        <div class="stat">
+          <h3>HP</h3>
+          <div id="enemy-hp">-</div>
+        </div>
+      </div>
+
+      <div id="log-container" class="ui-section">
+        <h2>Log</h2>
+        <div id="log">
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
