@@ -75,6 +75,8 @@ export default class Player extends Creature {
   addExperience(xp) {
     this.stats.xp += xp;
 
+    UiController.addLogMessage(`You gain ${xp} experience`);
+
     if (this.stats.xp >= this.stats.xpToNextLevel) {
       this._levelUp();
       UiController.addLogMessage(`You've reached level ${this.stats.level}!`);
