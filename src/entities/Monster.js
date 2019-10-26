@@ -8,6 +8,10 @@ import Player from './Player';
  * @type {('crab'|'spider')}
  */
 
+/**
+ * Monster types enum
+ * @type {Object<symbol, MonsterType>}
+ */
 const MonsterTypes = {
   crab: 'crab',
   spider: 'spider'
@@ -15,6 +19,7 @@ const MonsterTypes = {
 
 export default class Monster extends Creature {
   /**
+   * @static
    * @returns {Object<symbol, MonsterType>} the available monster types
    */
   static get types() {

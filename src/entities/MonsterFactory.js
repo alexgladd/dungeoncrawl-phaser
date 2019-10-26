@@ -2,6 +2,7 @@
 
 import Monster from './Monster';
 import EntityScene from '../scenes/EntityScene';
+import Util from '../game/Util';
 
 /**
  * All available monsters arranged by level
@@ -45,7 +46,7 @@ const createMonster = (type, scene, x=0, y=0) => {
  * @returns {Monster} a new instance of a random monster type
  */
 const createRandomMonster = (scene, upToLevel=LevelMonsters.length, x=0, y=0) => {
-  const level = Math.floor(Math.random() * (upToLevel + 1));
+  const level = Util.clamp(Math.floor(Math.random() * (upToLevel + 1)), 0, LevelMonsters.length - 1);
   const type = LevelMonsters[level][Math.floor(Math.random() * LevelMonsters[level].length)];
   return createMonster(type, scene, x, y);
 }
