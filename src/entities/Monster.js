@@ -74,11 +74,12 @@ export default class Monster extends Creature {
   }
 
   _preDeath() {
-    UiController.addLogMessage(`The ${this.type} dies`);
-    
     if (this.lastAttacker && this.lastAttacker instanceof Player) {
-      // reward xp
+      // killed by the player, reward xp
+      UiController.addLogMessage(`You kill the ${this.type}`);
       this.lastAttacker.addExperience(this.stats.rewardXp);
+    } else {
+      UiController.addLogMessage(`The ${this.type} dies`);
     }
   }
 }

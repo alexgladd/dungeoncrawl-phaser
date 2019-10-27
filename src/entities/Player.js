@@ -4,11 +4,62 @@ import Monster from './Monster';
 import MovementController from '../game/MovementController';
 import UiController from '../ui/UiController';
 
+/**
+ * @typedef PlayerStats
+ * @type {Object}
+ * @property {number} level the player's level
+ * @property {number} xp the player's current experience
+ * @property {number} xpToNextLevel the experience needed for the player to get to the next level
+ * @property {number} maxHp the player's maximum HP
+ * @property {number} hp the player's current HP
+ * @property {number} attack the player's attack strength
+ * @property {number} defense the player's defense strength
+ * @property {number} accuracy the player's accuracy proficiency
+ * @property {number} dodge the player's dodge proficiency
+ */
+
+/**
+ * @typedef PlayerData
+ * @type {Object}
+ * @property {PlayerStats} stats the player's stats
+ */
+
+/**
+ * Default player stats
+ */
+const DefaultPlayerStats = {
+  maxHp: 10,
+  hp: 10,
+  attack: 2,
+  xp: 0,
+  xpToNextLevel: 100
+};
+
+/**
+ * Player
+ */
 export default class Player extends Creature {
-  constructor(scene, x=0, y=0, frame=25) {
-    super(scene, { maxHp: 10, hp: 10, attack: 2, xp: 0, xpToNextLevel: 100 }, x, y, frame);
+  /**
+   * Player constructor
+   * @param {DungeonScene} scene the scene to put the player into
+   * @param {?PlayerData} playerData player data to init the player with (null for defaults)
+   * @param {?number} x the player's X position
+   * @param {?number} y the player's Y position
+   * @param {?number} frame the spritesheet frame for the player graphic
+   */
+  constructor(scene, playerData=null, x=0, y=0, frame=25) {
+    super(scene, playerData ? playerData.stats : DefaultPlayerStats, x, y, frame);
 
     this.handleInput = this.handleInput.bind(this);
+  }
+
+  /**
+   * @returns {PlayerData} the player's current data
+   */
+  get playerData() {
+    return {
+      stats: { ...this.stats }
+    };
   }
 
   start() {

@@ -5,16 +5,26 @@ import MonsterFactory from '../entities/MonsterFactory';
 import DungeonLevel from '../game/DungeonLevel';
 import TurnController from '../game/TurnController';
 import UiController from '../ui/UiController';
+import Position from '../game/Position';
 import InputController from '../game/InputController';
 import MovementController from '../game/MovementController';
 import spritesheet from '../assets/spritesheet.png';
 
 export default class DungeonScene extends EntityScene {
-  constructor(level=0) {
-    super(`dungeon-level-${level}`);
+  /**
+   * DungeonScene constructor
+   * @param {number} level the dungeon level to build the level for
+   * @param {import('../entities/Player').PlayerData} playerData the player data to init the player with (null for default)
+   */
+  constructor(level=0, playerData=null) {
+    const key = `dungeon-level-${level}`;
+    super(key);
 
+    this.sceneKey = key;
     this.dungeonLevel = level;
     this.turnController = new TurnController();
+
+    this._playerData = playerData;
   }
 
   preload() {
@@ -41,6 +51,16 @@ export default class DungeonScene extends EntityScene {
 
   handleInput(event) {
     // console.log('Input args', event.key);
+
+    if (event.key === 'e') {
+      // interaction
+      if (Position.equals(this.player.gamePosition, this._map.exitLocation)) {
+        const nextScene = new DungeonScene(this.dungeonLevel + 1, this.player.playerData);
+        this.scene.add(nextScene.sceneKey, nextScene);
+        this.scene.start(nextScene.sceneKey);
+        this.scene.stop(this.sceneKey);
+      }
+    }
   }
 
   startAiTurn() {
@@ -73,7 +93,8 @@ export default class DungeonScene extends EntityScene {
   }
 
   _spawnPlayer() {
-    this.player = new Player(this, this.map.spawnLocation.x, this.map.spawnLocation.y);
+    this.player = new Player(this, this._playerData,
+      this.map.spawnLocation.x, this.map.spawnLocation.y);
     this.addEntity(this.player);
     UiController.updatePlayerStats(this.player);
   }
