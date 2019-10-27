@@ -3,6 +3,7 @@ import Creature from './Creature';
 import Monster from './Monster';
 import MovementController from '../game/MovementController';
 import UiController from '../ui/UiController';
+import Roll from '../game/Roll';
 
 /**
  * @typedef PlayerStats
@@ -155,7 +156,9 @@ export default class Player extends Creature {
    * @param {import('./Creature').CombatResult} result the combat results
    */
   _postAttack(result) {
-    if (result.didHit) {
+    if (result.didHit && result.hit === Roll.criticalSuccess) {
+      UiController.addLogMessage(`You critically hit the ${result.defender.type} for ${result.damage} damage`);
+    } else if (result.didHit) {
       UiController.addLogMessage(`You hit the ${result.defender.type} for ${result.damage} damage`);
     } else {
       UiController.addLogMessage(`You miss the ${result.defender.type}`);

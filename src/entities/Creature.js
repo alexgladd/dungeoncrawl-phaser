@@ -147,8 +147,10 @@ export default class Creature extends SpriteEntity {
    * @param {number} dodge the dodge chance for the attack
    */
   _attackHit(creature, hit, dodge=null) {
-    const atkPower = this.attackPower;
+    let atkPower = this.attackPower;
     const defPower = creature.defensePower;
+
+    if (hit === Roll.criticalSuccess) atkPower *= 2;
 
     /**
      * @type {CombatResult}
