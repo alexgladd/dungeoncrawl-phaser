@@ -68,35 +68,25 @@ export default class Player extends Creature {
 
     this.sprite.setTint(0xffff00);
 
-    const arrows = this.scene.input.keyboard.addKeys({
-      up: Phaser.Input.Keyboard.KeyCodes.UP,
-      down: Phaser.Input.Keyboard.KeyCodes.DOWN,
-      left: Phaser.Input.Keyboard.KeyCodes.LEFT,
-      right: Phaser.Input.Keyboard.KeyCodes.RIGHT
-    }, true, true);
-
-    const wasd = this.scene.input.keyboard.addKeys({
+    const move = this.scene.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
       down: Phaser.Input.Keyboard.KeyCodes.S,
       left: Phaser.Input.Keyboard.KeyCodes.A,
-      right: Phaser.Input.Keyboard.KeyCodes.D
+      right: Phaser.Input.Keyboard.KeyCodes.D,
+      upLeft: Phaser.Input.Keyboard.KeyCodes.Q,
+      upRight: Phaser.Input.Keyboard.KeyCodes.E,
+      downLeft: Phaser.Input.Keyboard.KeyCodes.Z,
+      downRight: Phaser.Input.Keyboard.KeyCodes.C
     }, true, true);
 
-    [ arrows.up, wasd.up ].forEach(key => {
-      key.on('down', () => this.handleInput(MovementController.directions.up));
-    });
-
-    [ arrows.down, wasd.down ].forEach(key => {
-      key.on('down', () => this.handleInput(MovementController.directions.down));
-    });
-
-    [ arrows.left, wasd.left ].forEach(key => {
-      key.on('down', () => this.handleInput(MovementController.directions.left));
-    });
-
-    [ arrows.right, wasd.right ].forEach(key => {
-      key.on('down', () => this.handleInput(MovementController.directions.right));
-    });
+    move.up.on('down', () => this.handleInput(MovementController.directions.up));
+    move.down.on('down', () => this.handleInput(MovementController.directions.down));
+    move.left.on('down', () => this.handleInput(MovementController.directions.left));
+    move.right.on('down', () => this.handleInput(MovementController.directions.right));
+    move.upLeft.on('down', () => this.handleInput(MovementController.directions.upLeft));
+    move.upRight.on('down', () => this.handleInput(MovementController.directions.upRight));
+    move.downLeft.on('down', () => this.handleInput(MovementController.directions.downLeft));
+    move.downRight.on('down', () => this.handleInput(MovementController.directions.downRight));
   }
 
   update(time, delta) {
@@ -113,7 +103,8 @@ export default class Player extends Creature {
         UiController.updateEnemy(adjEntity);
         this.scene.startAiTurn();
       }
-    } else if (MovementController.canMove(this, direction, this.scene.map)) {
+    } else if (!MovementController.isDiagonal(direction) &&
+        MovementController.canMove(this, direction, this.scene.map)) {
       this.translate(direction);
       UiController.clearEnemy();
       this.scene.startAiTurn();

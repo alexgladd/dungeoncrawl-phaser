@@ -52,7 +52,7 @@ export default class DungeonScene extends EntityScene {
   handleInput(event) {
     // console.log('Input args', event.key);
 
-    if (event.key === 'e') {
+    if (event.key === 'f') {
       // interaction
       if (Position.equals(this.player.gamePosition, this._map.exitLocation)) {
         const nextScene = new DungeonScene(this.dungeonLevel + 1, this.player.playerData);

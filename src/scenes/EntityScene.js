@@ -93,6 +93,18 @@ export default class EntityScene extends Phaser.Scene {
       case MovementController.directions.right:
         return this.getEntityAt({ x: entity.gamePosition.x + 1, y: entity.gamePosition.y });
 
+      case MovementController.directions.upLeft:
+        return this.getEntityAt({ x: entity.gamePosition.x - 1, y: entity.gamePosition.y - 1 });
+
+      case MovementController.directions.upRight:
+        return this.getEntityAt({ x: entity.gamePosition.x + 1, y: entity.gamePosition.y - 1 });
+
+      case MovementController.directions.downLeft:
+        return this.getEntityAt({ x: entity.gamePosition.x - 1, y: entity.gamePosition.y + 1 });
+
+      case MovementController.directions.downRight:
+        return this.getEntityAt({ x: entity.gamePosition.x + 1, y: entity.gamePosition.y + 1 });
+
       default:
         return null;
     }

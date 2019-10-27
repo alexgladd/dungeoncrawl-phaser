@@ -90,6 +90,25 @@ export default class Entity extends Phaser.GameObjects.Container {
       case MovementController.directions.right:
         this.translateRight();
         break;
+
+      case MovementController.directions.upLeft:
+        this.translateUpLeft();
+        break;
+
+      case MovementController.directions.upRight:
+        this.translateUpRight();
+        break;
+
+      case MovementController.directions.downLeft:
+        this.translateDownLeft();
+        break;
+
+      case MovementController.directions.downRight:
+        this.translateDownRight();
+        break;
+      
+      default:
+        console.log(`Can't translate the requested direction: ${direction}`);
     }
   }
 
@@ -130,6 +149,46 @@ export default class Entity extends Phaser.GameObjects.Container {
     this.gamePosition = {
       x: this.gamePosition.x - 1,
       y: this.gamePosition.y
+    };
+  }
+
+  /**
+   * Move the entity one unit diagonally up/left
+   */
+  translateUpLeft() {
+    this.gamePosition = {
+      x: this.gamePosition.x - 1,
+      y: this.gamePosition.y - 1
+    };
+  }
+
+  /**
+   * Move the entity one unit diagonally up/right
+   */
+  translateUpRight() {
+    this.gamePosition = {
+      x: this.gamePosition.x + 1,
+      y: this.gamePosition.y - 1
+    };
+  }
+
+  /**
+   * Move the entity one unit diagonally down/left
+   */
+  translateDownLeft() {
+    this.gamePosition = {
+      x: this.gamePosition.x - 1,
+      y: this.gamePosition.y + 1
+    };
+  }
+
+  /**
+   * Move the entity one unit diagonally down/right
+   */
+  translateDownRight() {
+    this.gamePosition = {
+      x: this.gamePosition.x + 1,
+      y: this.gamePosition.y + 1
     };
   }
 }

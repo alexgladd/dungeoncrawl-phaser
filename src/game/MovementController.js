@@ -2,7 +2,7 @@
 
 /**
  * @typedef Direction
- * @type {('UP'|'DOWN'|'LEFT'|'RIGHT')}
+ * @type {('UP'|'DOWN'|'LEFT'|'RIGHT'|'UP_LEFT'|'UP_RIGHT'|'DOWN_LEFT'|'DOWN_RIGHT')}
  */
 
 /**
@@ -13,15 +13,39 @@ const directions = {
   up: 'UP',
   right: 'RIGHT',
   down: 'DOWN',
-  left: 'LEFT'
+  left: 'LEFT',
+  upLeft: 'UP_LEFT',
+  upRight: 'UP_RIGHT',
+  downLeft: 'DOWN_LEFT',
+  downRight: 'DOWN_RIGHT'
 };
 
 /**
+ * Get a random direction
+ * @param {?boolean} diagonals whether to include diagonals
  * @returns {Direction} a random direction
  */
-const getRandomDirection = () => {
+const getRandomDirection = (diagonals=false) => {
   const dirs = Object.values(directions);
-  return dirs[Math.floor(Math.random() * dirs.length)];
+
+  if (diagonals) {
+    return dirs[Math.floor(Math.random() * dirs.length)];
+  } else {
+    return dirs[Math.floor(Math.random() * 4)];
+  }
+}
+
+/**
+ * Check if the given direction is a diagonal
+ * @param {Direction} direction the direction to check
+ * @returns {boolean} true if the given direction is a diagonal
+ */
+const isDiagonal = (direction) => {
+  return [
+    directions.upLeft,
+    directions.upRight,
+    directions.downLeftf,
+    directions.downRight ].includes(direction);
 }
 
 /**
@@ -43,6 +67,18 @@ const canMove = (entity, direction, map) => {
     
     case directions.right:
       return canMoveRight(entity, map);
+
+    case directions.upLeft:
+      return canMoveUpLeft(entity, map);
+
+    case directions.upRight:
+      return canMoveUpRight(entity, map);
+
+    case directions.downLeft:
+      return canMoveDownLeft(entity, map);
+
+    case directions.downRight:
+      return canMoveDownRight(entity, map);
     
     default:
       return false;
@@ -105,12 +141,73 @@ const canMoveRight = (entity, map) => {
   return map.isPassable(nextPos);
 }
 
+/**
+ * Check whether the given entity can move diagonally up/left on the given level
+ * @param {Entity} entity the entity to check movement for
+ * @param {DungeonLevel} map the map to use for the movement check
+ */
+const canMoveUpLeft = (entity, map) => {
+  const nextPos = {
+    x: entity.gamePosition.x - 1,
+    y: entity.gamePosition.y - 1
+  };
+
+  return map.isPassable(nextPos);
+}
+
+/**
+ * Check whether the given entity can move diagonally up/right on the given level
+ * @param {Entity} entity the entity to check movement for
+ * @param {DungeonLevel} map the map to use for the movement check
+ */
+const canMoveUpRight = (entity, map) => {
+  const nextPos = {
+    x: entity.gamePosition.x + 1,
+    y: entity.gamePosition.y - 1
+  };
+
+  return map.isPassable(nextPos);
+}
+
+/**
+ * Check whether the given entity can move diagonally down/left on the given level
+ * @param {Entity} entity the entity to check movement for
+ * @param {DungeonLevel} map the map to use for the movement check
+ */
+const canMoveDownLeft = (entity, map) => {
+  const nextPos = {
+    x: entity.gamePosition.x - 1,
+    y: entity.gamePosition.y + 1
+  };
+
+  return map.isPassable(nextPos);
+}
+
+/**
+ * Check whether the given entity can move diagonally down/right on the given level
+ * @param {Entity} entity the entity to check movement for
+ * @param {DungeonLevel} map the map to use for the movement check
+ */
+const canMoveDownRight = (entity, map) => {
+  const nextPos = {
+    x: entity.gamePosition.x + 1,
+    y: entity.gamePosition.y + 1
+  };
+
+  return map.isPassable(nextPos);
+}
+
 export default {
   directions,
   getRandomDirection,
+  isDiagonal,
   canMove,
   canMoveUp,
   canMoveDown,
   canMoveLeft,
-  canMoveRight
+  canMoveRight,
+  canMoveUpLeft,
+  canMoveUpRight,
+  canMoveDownLeft,
+  canMoveDownRight
 }
