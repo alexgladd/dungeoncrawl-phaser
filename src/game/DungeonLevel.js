@@ -152,14 +152,19 @@ export default class DungeonLevel {
         const tile = this._tiles[x][y];
 
         if (tile.type === 'wall') {
+          // wall
           this._levelData[y].push(2);
-        } else if (this._level !== 0 && this.spawnLocation.x === x && this.spawnLocation.y === y) {
-          this._levelData[y].push(194);
+        } else if (this.spawnLocation.x === x && this.spawnLocation.y === y) {
+          // spawn location: rubble
+          this._levelData[y].push(51);
         } else if (this.exitLocation.x === x && this.exitLocation.y === y) {
+          // exit location: down stairs
           this._levelData[y].push(195);
         } else {
+          // floor
           this._levelData[y].push(0);
         }
+        // TODO: door graphic?
       }
     }
   }
