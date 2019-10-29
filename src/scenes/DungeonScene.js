@@ -41,6 +41,7 @@ export default class DungeonScene extends EntityScene {
     this._spawnMonsters();
 
     UiController.addLogMessage(`You enter dungeon level ${this.dungeonLevel}`);
+    // TODO the stairs collapse behind you (new graphic)
 
     this.input.keyboard.on('keydown', this.handleInput, this);
   }

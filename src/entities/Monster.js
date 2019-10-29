@@ -5,7 +5,7 @@ import Player from './Player';
 
 /**
  * @typedef MonsterType
- * @type {('crab'|'spider')}
+ * @type {('crab'|'spider'|'rat'|'bat')}
  */
 
 /**
@@ -14,7 +14,9 @@ import Player from './Player';
  */
 const MonsterTypes = {
   crab: 'crab',
-  spider: 'spider'
+  spider: 'spider',
+  rat: 'rat',
+  bat: 'bat'
 };
 
 export default class Monster extends Creature {
