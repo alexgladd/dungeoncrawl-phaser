@@ -43,25 +43,29 @@ export default class DungeonScene extends EntityScene {
     UiController.addLogMessage(`You enter dungeon level ${this.dungeonLevel}`);
     UiController.addLogMessage('The stairs crumble into rubbble behind you');
 
-    this.input.keyboard.on('keydown', this.handleInput, this);
+    const keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F, true, false);
+    keyF.on('down', this._handleInteraction, this);
+
+    const keyX = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X, true, false);
+    keyX.on('down', this._handleRest, this);
   }
 
   update(time, delta) {
     this.cameras.main.centerOn(this.player.scenePosition.x + 8, this.player.scenePosition.y + 8);
   }
 
-  handleInput(event) {
-    // console.log('Input args', event.key);
-
-    if (event.key === 'f') {
-      // interaction
-      if (Position.equals(this.player.gamePosition, this._map.exitLocation)) {
-        const nextScene = new DungeonScene(this.dungeonLevel + 1, this.player.playerData);
-        this.scene.add(nextScene.sceneKey, nextScene);
-        this.scene.start(nextScene.sceneKey);
-        this.scene.stop(this.sceneKey);
-      }
+  _handleInteraction() {
+    if (Position.equals(this.player.gamePosition, this._map.exitLocation)) {
+      const nextScene = new DungeonScene(this.dungeonLevel + 1, this.player.playerData);
+      this.scene.add(nextScene.sceneKey, nextScene);
+      this.scene.start(nextScene.sceneKey);
+      this.scene.stop(this.sceneKey);
     }
+  }
+
+  _handleRest() {
+    console.log('Player rest');
+    // TODO player rest (heal, etc.); give AI turns
   }
 
   startAiTurn() {
