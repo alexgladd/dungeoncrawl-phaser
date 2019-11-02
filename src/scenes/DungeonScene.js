@@ -64,8 +64,7 @@ export default class DungeonScene extends EntityScene {
   }
 
   _handleRest() {
-    console.log('Player rest');
-    // TODO player rest (heal, etc.); give AI turns
+    this.player.rest();
   }
 
   startAiTurn() {

@@ -129,6 +129,22 @@ export default class Player extends Creature {
   }
 
   /**
+   * Heal the player for the given amount of HP
+   * @param {number} hp the amount of HP to heal the player for
+   */
+  heal(hp) {
+    this.stats.hp = Math.min(this.stats.hp + hp, this.stats.maxHp);
+  }
+
+  /**
+   * Have the player rest for one turn
+   */
+  rest() {
+    this.heal(Math.floor(this.stats.maxHp / 10.0));
+    this.scene.startAiTurn();
+  }
+
+  /**
    * Advance the player to the next level
    */
   _levelUp() {
