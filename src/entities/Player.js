@@ -163,12 +163,23 @@ export default class Player extends Creature {
    * @param {import('./Creature').CombatResult} result the combat results
    */
   _postAttack(result) {
-    if (result.didHit && result.hit === Roll.criticalSuccess) {
-      UiController.addLogMessage(`You critically hit the ${result.defender.type} for ${result.damage} damage`);
-    } else if (result.didHit) {
-      UiController.addLogMessage(`You hit the ${result.defender.type} for ${result.damage} damage`);
+    let msg = 'You ';
+
+    if (result.didHit) {
+      if (result.hit === Roll.criticalSuccess) {
+        msg += 'critically ';
+      }
+
+      msg += `hit the ${result.defender.type} for ${result.attack} damage `;
+
+      const blockedDmg = result.defense > result.attack ? result.attack : result.defense;
+      if (blockedDmg > 0) {
+        msg += `(${blockedDmg} blocked)`;
+      }
     } else {
-      UiController.addLogMessage(`You miss the ${result.defender.type}`);
+      msg += `miss the ${result.defender.type}`;
     }
+
+    UiController.addLogMessage(msg);
   }
 }
