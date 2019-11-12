@@ -1,0 +1,35 @@
+{
+  "crab": {
+    "level": 0,
+    "maxHp": 1,
+    "hp": 1,
+    "defense": 0,
+    "rewardXp": 10
+  },
+
+  "spider": {
+    "level": 1,
+    "maxHp": 2,
+    "hp": 2,
+    "defense": 0,
+    "rewardXp": 15
+  },
+
+  "rat": {
+    "level": 2,
+    "maxHp": 3,
+    "hp": 3,
+    "attack": 2,
+    "defense": 1,
+    "rewardXp": 20
+  },
+
+  "bat": {
+    "level": 2,
+    "maxHp": 2,
+    "hp": 2,
+    "attack": 2,
+    "defense": 1,
+    "rewardXp": 20
+  }
+}

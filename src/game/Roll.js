@@ -23,7 +23,7 @@ const NdM = (n, m) => {
     result += Math.floor(Math.random() * m) + 1;
   }
 
-  console.log(`Roll ${n}d${m}: ${result}`);
+  // console.log(`Roll ${n}d${m}: ${result}`);
 
   return result;
 }

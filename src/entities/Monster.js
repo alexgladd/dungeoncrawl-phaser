@@ -2,6 +2,8 @@ import Creature from './Creature';
 import MovementController from '../game/MovementController';
 import UiController from '../ui/UiController';
 import Player from './Player';
+import AI from '../ai';
+import EntityScene from '../scenes/EntityScene';
 
 /**
  * @typedef MonsterType
@@ -28,11 +30,24 @@ export default class Monster extends Creature {
     return MonsterTypes;
   }
 
-  constructor(scene, type, stats={}, tint=null, x=0, y=0, frame=282) {
+  /**
+   * Constructor
+   * @param {EntityScene} scene the scene to add the monster to
+   * @param {MonsterType} type the type of the monster
+   * @param {object} stats the monster's stats
+   * @param {import('../ai').AiType} aiType the type of AI to use for the monster
+   * @param {number} tint the color to tint the monster's sprite
+   * @param {number} x the game position x
+   * @param {number} y the game position y
+   * @param {number} frame the frame number of the monster's sprite
+   */
+  constructor(scene, type, stats={}, aiType, tint=null, x=0, y=0, frame=282) {
     super(scene, stats, x, y, frame);
 
     this._type = type;
     this._tint = tint;
+
+    this.ai = AI.initAi(aiType, this);
   }
 
   get type() {
@@ -53,18 +68,7 @@ export default class Monster extends Creature {
   }
 
   aiTurn() {
-    let attempts = 4;
-    let move = MovementController.getRandomDirection();
-
-    while (attempts > 0 && !this._isValidMove(move)) {
-      move = MovementController.getRandomDirection();
-      attempts--;
-    }
-
-    if (this._isValidMove(move)) {
-      this.translate(move);
-    }
-    // else do nothing this turn
+    this.ai.takeTurn();
   }
 
   _isValidMove(direction) {
