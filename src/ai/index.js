@@ -3,6 +3,7 @@
 import BaseAi from './BaseAi';
 import PassiveAi from './PassiveAi';
 import Creature from '../entities/Creature';
+import DefensiveAi from './DefensiveAi';
 
 /**
  * @typedef AiType
@@ -28,6 +29,9 @@ const initAi = (type, creature) => {
   switch (type) {
     case AiTypes.passive:
       return new PassiveAi(creature);
+
+    case AiTypes.defensive:
+      return new DefensiveAi(creature);
 
     default:
       return null;

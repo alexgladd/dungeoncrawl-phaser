@@ -11,8 +11,7 @@ import monsterStats from './monsters.json';
  * @type {Array<Array<import('./Monster').MonsterType>>}
  */
 const LevelMonsters = [
-  [Monster.types.crab],
-  [Monster.types.spider],
+  [Monster.types.crab, Monster.types.spider],
   [Monster.types.rat, Monster.types.bat]
 ];
 
@@ -32,15 +31,15 @@ const createMonster = (type, scene, x=0, y=0) => {
 
     case Monster.types.spider:
       // const spiderStats = { level: 1, maxHp: 2, hp: 2, defense: 0, rewardXp: 15 };
-      return new Monster(scene, type, monsterStats.spider, AI.types.passive, 0x875303, x, y, 190);
+      return new Monster(scene, type, monsterStats.spider, AI.types.defensive, 0x875303, x, y, 190);
 
     case Monster.types.rat:
       // const ratStats = { level: 2, maxHp: 3, hp: 3, attack: 2, defense: 1, rewardXp: 20 };
-      return new Monster(scene, type, monsterStats.rat, AI.types.passive, 0xC6AB82, x, y, 287);
+      return new Monster(scene, type, monsterStats.rat, AI.types.defensive, 0xC6AB82, x, y, 287);
 
     case Monster.types.bat:
       // const batStats = { level: 2, maxHp: 2, hp: 2, attack: 2, defense: 1, rewardXp: 20 };
-      return new Monster(scene, type, monsterStats.bat, AI.types.passive, 0x6C92B8, x, y, 282);
+      return new Monster(scene, type, monsterStats.bat, AI.types.defensive, 0x6C92B8, x, y, 282);
 
     default:
       console.error('Invalid monster type requested', type);

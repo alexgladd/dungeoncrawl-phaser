@@ -9,6 +9,15 @@ export default class PassiveAi extends BaseAi {
   }
 
   takeTurn() {
+    this.tryRandomMove();
+    // else do nothing this turn
+  }
+
+  /**
+   * Attempt to move a random direction
+   * @returns {boolean} true if the controlled creature moves, false otherwise
+   */
+  tryRandomMove() {
     let moveAttempts = 4;
     let move = MovementController.getRandomDirection();
 
@@ -19,7 +28,9 @@ export default class PassiveAi extends BaseAi {
 
     if (this.creature._isValidMove(move)) {
       this.creature.translate(move);
+      return true;
+    } else {
+      return false;
     }
-    // else do nothing this turn
   }
 }

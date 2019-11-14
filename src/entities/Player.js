@@ -170,16 +170,47 @@ export default class Player extends Creature {
         msg += 'critically ';
       }
 
-      msg += `hit the ${result.defender.type} for ${result.attack} damage `;
+      msg += `hit the ${result.defender.type} for ${result.attack} damage`;
 
       const blockedDmg = result.defense > result.attack ? result.attack : result.defense;
       if (blockedDmg > 0) {
-        msg += `(${blockedDmg} blocked)`;
+        msg += ` (${blockedDmg} blocked)`;
       }
     } else {
       msg += `miss the ${result.defender.type}`;
     }
 
+    UiController.addLogMessage(msg);
+  }
+
+  /**
+   * Handle the results of damage
+   * @param {import('./Creature').CombatResult} result the combat results
+   */
+  _postDamage(result) {
+    let msg = `The ${result.attacker.type} `;
+
+    if (result.hit === Roll.criticalSuccess) {
+      msg += 'critically ';
+    }
+
+    msg += `hits you for ${result.attack} damage`;
+
+    const blockedDmg = result.defense > result.attack ? result.attack : result.defense;
+    if (blockedDmg > 0) {
+      msg += ` (${blockedDmg} blocked)`;
+    }
+
+    UiController.updatePlayerStats(this);
+    UiController.addLogMessage(msg);
+  }
+
+  /**
+   * Handle the results of an avoided attack
+   * @param {import('./Creature').CombatResult} result the combat results
+   */
+  _postMiss(result) {
+    const msg = `The ${result.attacker.type} misses you`;
     UiController.addLogMessage(msg);
   }
 }

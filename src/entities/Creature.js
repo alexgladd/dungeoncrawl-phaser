@@ -170,6 +170,7 @@ export default class Creature extends SpriteEntity {
 
     this._postAttack(result);
     creature.takeDamage(result.damage);
+    creature._postDamage(result);
   }
 
   /**
@@ -193,20 +194,29 @@ export default class Creature extends SpriteEntity {
     console.log(`${this.constructor.name}'s attack misses [ hit=${hit} dodge=${dodge} ]`);
 
     this._postAttack(result);
+    creature._postMiss(result);
   }
 
   /**
    * Called when the creature is about to die; should be overridden by subclasses.
    */
-  _preDeath() {
-
-  }
+  _preDeath() {}
 
   /**
    * Called after this creature completes an attack; should be overridden by subclasses.
    * @param {CombatResult} result the results of the combat
    */
-  _postAttack(result) {
+  _postAttack(result) {}
 
-  }
+  /**
+   * Called after this creature was missed by an attempted attack; should be overridden by subclasses.
+   * @param {CombatResult} result the results of the combat
+   */
+  _postMiss(result) {}
+
+  /**
+   * Called after this creature takes damage from an attack; should be overridden by subclasses.
+   * @param {CombatResult} result the results of the combat
+   */
+  _postDamage(result) {}
 }

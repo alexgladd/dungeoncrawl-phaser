@@ -1,4 +1,5 @@
 import Creature from "../entities/Creature";
+import EntityScene from "../scenes/EntityScene";
 
 /**
  * Base AI class - SHOULD NOT BE INSTANTIATED
@@ -10,6 +11,14 @@ export default class BaseAi {
    */
   constructor(creature) {
     this.creature = creature;
+  }
+
+  /**
+   * Get the scene the AI's creature belongs to
+   * @returns {EntityScene} the scene the controlled creature belongs to
+   */
+  get scene() {
+    return this.creature.scene;
   }
 
   /**
