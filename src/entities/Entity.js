@@ -16,6 +16,7 @@ export default class Entity extends Phaser.GameObjects.Container {
     };
 
     this._ppu = ppu;
+    this._isPassable = false;
   }
 
   /**
@@ -50,6 +51,20 @@ export default class Entity extends Phaser.GameObjects.Container {
    */
   get scenePosition() {
     return this._scenePosition;
+  }
+
+  /**
+   * @param {boolean} passable whether or not the entity is passable
+   */
+  set isPassable(passable=false) {
+    this._isPassable = passable;
+  }
+
+  /**
+   * @returns {boolean} true if the entity is passable
+   */
+  get isPassable() {
+    return this._isPassable;
   }
 
   /**

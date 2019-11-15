@@ -96,7 +96,7 @@ export default class Player extends Creature {
   handleInput(direction) {
     const adjEntity = this.scene.getAdjacentEntity(this, direction);
 
-    if (adjEntity) {
+    if (adjEntity && !adjEntity.isPassable) {
       // attack the adjacent entity if it's a monster
       if (adjEntity instanceof Monster) {
         this.attack(adjEntity);
@@ -141,6 +141,7 @@ export default class Player extends Creature {
    */
   rest() {
     this.heal(Math.floor(this.stats.maxHp / 10.0));
+    UiController.updatePlayerStats(this);
     this.scene.startAiTurn();
   }
 

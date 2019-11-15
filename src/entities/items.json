@@ -1,0 +1,25 @@
+[
+  {
+    "level": 0,
+    "type": "weapon",
+    "name": "Wood Sword",
+    "stats": { "bonusAttack": 1 },
+    "frame": 896
+  },
+
+  {
+    "level": 0,
+    "type": "armor",
+    "name": "Wool Jacket",
+    "stats": { "bonusDefense": 1 },
+    "frame": 741
+  },
+
+  {
+    "level": 0,
+    "type": "potion",
+    "name": "Small Health Potion",
+    "stats": { "healHp": 5 },
+    "frame": 818
+  }
+]

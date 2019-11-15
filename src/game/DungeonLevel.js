@@ -107,6 +107,14 @@ export default class DungeonLevel {
   }
 
   /**
+   * Get a random room in the level
+   * @returns {object} the random room
+   */
+  getRandomRoom() {
+    return this.rooms[Math.floor(Math.random() * this.rooms.length)];
+  }
+
+  /**
    * Determine the spawn and exit rooms and locations for the level
    */
   _createLocations() {

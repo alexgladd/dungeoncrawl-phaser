@@ -1,13 +1,11 @@
 import EntityScene from './EntityScene';
 import Player from '../entities/Player';
-import Monster from '../entities/Monster';
+import ItemFactory from '../entities/ItemFactory';
 import MonsterFactory from '../entities/MonsterFactory';
 import DungeonLevel from '../game/DungeonLevel';
 import TurnController from '../game/TurnController';
 import UiController from '../ui/UiController';
 import Position from '../game/Position';
-import InputController from '../game/InputController';
-import MovementController from '../game/MovementController';
 import spritesheet from '../assets/spritesheet.png';
 
 export default class DungeonScene extends EntityScene {
@@ -37,6 +35,7 @@ export default class DungeonScene extends EntityScene {
 
   create(data) {
     this._createMap();
+    this._spawnItems();
     this._spawnPlayer();
     this._spawnMonsters();
 
@@ -55,7 +54,7 @@ export default class DungeonScene extends EntityScene {
   }
 
   _handleInteraction() {
-    if (Position.equals(this.player.gamePosition, this._map.exitLocation)) {
+    if (Position.equals(this.player.gamePosition, this.map.exitLocation)) {
       const nextScene = new DungeonScene(this.dungeonLevel + 1, this.player.playerData);
       this.scene.add(nextScene.sceneKey, nextScene);
       this.scene.start(nextScene.sceneKey);
@@ -94,6 +93,20 @@ export default class DungeonScene extends EntityScene {
     tilemap.createStaticLayer(0, tileset, 0, 0);
 
     this.cameras.main.setBounds(0, 0, this.map.tileWidth * 16, this.map.tileHeight * 16);
+  }
+
+  _spawnItems() {
+    this.items = [];
+    const numItems = 3;
+
+    for (let i = 0; i < numItems; i++) {
+      const room = this.map.getRandomRoom();
+      const rPos = DungeonLevel.randomRoomLocation(room);
+      const item = ItemFactory.createRandomItem(this, this.dungeonLevel, rPos.x, rPos.y);
+
+      this.addEntity(item);
+      this.items.push(item);
+    }
   }
 
   _spawnPlayer() {
